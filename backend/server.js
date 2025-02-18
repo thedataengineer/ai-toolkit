@@ -4,7 +4,15 @@ const dotenv = require("dotenv");
 
 dotenv.config();
 const app = express();
-app.use(cors());
+
+// ✅ Allow CORS for Vercel frontend
+const corsOptions = {
+    origin: process.env.FRONTEND_URL || "*", // Allow Vercel domain
+    methods: "GET,POST,PUT,DELETE",
+    credentials: true
+};
+
+app.use(cors(corsOptions));
 app.use(express.json());
 
 const PORT = process.env.PORT || 5001;
