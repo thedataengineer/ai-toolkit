@@ -1,18 +1,37 @@
-export default async function Home() {
-  let data = "Loading...";
+import { useState } from "react";
 
-  try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/`, { cache: "no-store" }); // Calls backend API
-    data = await res.text();
-  } catch (error) {
-    console.error("Error fetching data from backend:", error);
-    data = "Failed to load data from backend.";
-  }
+export default function Home() {
+  const [taskUpdates, setTaskUpdates] = useState("");
+  const [standupReport, setStandupReport] = useState("");
+
+  const generateStandup = async () => {
+    try {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/generate-standup`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ task_updates: taskUpdates }),
+      });
+      const data = await res.json();
+      setStandupReport(data.report || "Failed to generate report.");
+    } catch (error) {
+      console.error("Error fetching AI report:", error);
+      setStandupReport("Error generating report.");
+    }
+  };
 
   return (
     <div style={{ textAlign: "center", padding: "50px" }}>
-      <h1>Frontend Connected to Backend</h1>
-      <p>{data}</p>
+      <h1>AI Toolkit - Stand-Up Generator</h1>
+      <textarea
+        value={taskUpdates}
+        onChange={(e) => setTaskUpdates(e.target.value)}
+        placeholder="Enter your recent work updates..."
+        rows="4" cols="50"
+      />
+      <br />
+      <button onClick={generateStandup}>Generate My Stand-Up</button>
+      <p><strong>Generated Stand-Up Report:</strong></p>
+      <p>{standupReport}</p>
     </div>
   );
 }
