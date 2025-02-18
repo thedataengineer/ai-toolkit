@@ -2,7 +2,7 @@ export default async function Home() {
   let data = "Loading...";
 
   try {
-    const res = await fetch("http://localhost:5001/", { cache: "no-store" }); // Calls backend API
+    const res = await fetch("https://ai-toolkit-backend-production.up.railway.app/", { cache: "no-store" }); // Calls backend API
     data = await res.text();
   } catch (error) {
     console.error("Error fetching data from backend:", error);
