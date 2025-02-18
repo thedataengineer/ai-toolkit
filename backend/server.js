@@ -5,10 +5,11 @@ const dotenv = require("dotenv");
 dotenv.config();
 const app = express();
 
-// ✅ Allow CORS for Vercel frontend
+// Configure CORS to allow requests from Vercel frontend
 const corsOptions = {
-    origin: process.env.FRONTEND_URL || "*", // Allow Vercel domain
+    origin: process.env.FRONTEND_URL || "*",  // Allow requests from your frontend
     methods: "GET,POST,PUT,DELETE",
+    allowedHeaders: "Content-Type,Authorization",
     credentials: true
 };
 
