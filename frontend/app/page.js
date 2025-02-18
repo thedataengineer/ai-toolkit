@@ -1,3 +1,5 @@
+"use client";  // ✅ This makes the component run on the client side
+
 import { useState } from "react";
 
 export default function Home() {
